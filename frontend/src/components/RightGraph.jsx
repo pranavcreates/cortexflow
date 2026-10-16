@@ -125,10 +125,10 @@ export default function RightGraph({
   const hoveredNode = hoveredNodeId ? nodes.find((n) => n.id === hoveredNodeId) : null;
 
   return (
-    <section className="w-full lg:w-[36%] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden relative select-none">
+    <section className="w-full lg:w-[36%] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden relative select-none">
       
       {/* 1. Top Segmented Filter Bar (Clean background hover shift) */}
-      <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between gap-2 z-10">
+      <div className="px-6 py-4 flex items-center justify-between gap-2 z-10">
         
         {/* Pill-shaped Segmented Filter Bar */}
         <div 

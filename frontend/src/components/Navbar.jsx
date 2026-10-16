@@ -20,7 +20,7 @@ export default function Navbar({
   isConnected 
 }) {
   return (
-    <header className="h-14 bg-[#141927] rounded-2xl border border-white/5 px-6 flex items-center justify-between shrink-0 select-none">
+    <header className="h-14 bg-[#141927] rounded-2xl px-6 flex items-center justify-between shrink-0 select-none">
       
       {/* 1. Left: Brand & Product Identity */}
       <div className="flex items-center gap-3">

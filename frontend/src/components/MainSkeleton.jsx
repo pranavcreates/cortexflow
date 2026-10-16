@@ -8,7 +8,7 @@ export default function MainSkeleton() {
       {/* =================================================================== */}
       {/* 1. Header Navbar Skeleton */}
       {/* =================================================================== */}
-      <header className="h-14 bg-[#141927] rounded-2xl border border-white/5 px-6 flex items-center justify-between shrink-0">
+      <header className="h-14 bg-[#141927] rounded-2xl px-6 flex items-center justify-between shrink-0">
         
         {/* Left: Brand Identity Skeleton */}
         <div className="flex items-center gap-3">
@@ -76,7 +76,7 @@ export default function MainSkeleton() {
         {/* ----------------------------------------------------------------- */}
         {/* Left Panel Skeleton: Ingestion, Commitments, Drift */}
         {/* ----------------------------------------------------------------- */}
-        <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden p-6 space-y-8">
+        <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden p-6 space-y-8">
           
           {/* Section 1: Ingestion Skeleton */}
           <section className="space-y-4">
@@ -152,7 +152,7 @@ export default function MainSkeleton() {
         {/* ----------------------------------------------------------------- */}
         {/* Center Panel Skeleton: AI Agent Reasoning Console */}
         {/* ----------------------------------------------------------------- */}
-        <section className="w-full lg:w-[38%] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden">
+        <section className="w-full lg:w-[38%] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden">
           
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             
@@ -203,7 +203,7 @@ export default function MainSkeleton() {
           </div>
 
           {/* Bottom input skeleton */}
-          <div className="p-4 border-t border-white/5">
+          <div className="p-4">
             <div className="h-11 rounded-full bg-[#181C29] border border-white/5 flex items-center px-4 justify-between">
               <span className="text-xs text-gray-600 font-mono">loading input console...</span>
               <div className="h-8 w-16 rounded-full bg-[#3B82F6]/30 border border-[#3B82F6]/40 flex items-center justify-center text-xs text-white/50">
@@ -217,10 +217,10 @@ export default function MainSkeleton() {
         {/* ----------------------------------------------------------------- */}
         {/* Right Panel Skeleton: Concentric 3-Ring Visualizer */}
         {/* ----------------------------------------------------------------- */}
-        <section className="w-full lg:w-[36%] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden relative">
+        <section className="w-full lg:w-[36%] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden relative">
           
           {/* Filter Bar Skeleton */}
-          <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between z-10">
+          <div className="px-6 py-4 flex items-center justify-between z-10">
             <div className="flex items-center bg-[#181C29] border border-white/5 rounded-full p-1 gap-1">
               {['ALL', 'Systems', 'People', 'Truth'].map((f, idx) => (
                 <div

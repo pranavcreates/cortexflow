@@ -40,7 +40,7 @@ export default function LeftPanel({
   };
 
   return (
-    <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden select-none">
+    <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden select-none">
       
       {/* Scrollable Container with generous vertical breathing room (space-y-8) */}
       <div className="flex-1 overflow-y-auto p-6 space-y-8">
@@ -92,7 +92,7 @@ export default function LeftPanel({
             <button
               type="submit"
               disabled={isIngesting || !text.trim()}
-              className="w-full rounded-full bg-indigo-600 hover:bg-indigo-500 shadow-[0_0_15px_rgba(79,70,229,0.3)] border border-indigo-400/30 text-white font-medium text-xs py-2.5 transition-colors flex items-center justify-center gap-2 disabled:opacity-40 disabled:pointer-events-none"
+              className="w-full rounded-full bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium text-xs py-2.5 transition-colors flex items-center justify-center gap-2 shadow-sm border-0 disabled:opacity-40 disabled:pointer-events-none"
             >
               <span>{isIngesting ? 'loading...' : 'Ingest to Brain'}</span>
               <Send className={`h-3.5 w-3.5 ${isIngesting ? 'animate-pulse' : ''}`} />

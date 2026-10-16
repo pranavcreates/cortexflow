@@ -122,18 +122,18 @@ export default function CenterChat({
   };
 
   return (
-    <section className="w-full lg:w-[38%] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden select-none">
+    <section className="w-full lg:w-[38%] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden select-none">
       
 
 
       {/* Prompt Scenario Chips directly above message scroll area */}
       <div className="p-4 pb-0">
-        <div className="flex items-center gap-2 flex-wrap mb-4 pb-2 border-b border-white/5">
+        <div className="flex items-center gap-2 flex-wrap mb-3">
           <button
             type="button"
             onClick={() => onSendMessage("Why did we change Payment-API timeout to 5s, and who knows this system best?")}
             disabled={isAsking}
-            className="bg-[#141927] hover:bg-[#1D2232] border border-white/10 text-gray-300 hover:text-white text-xs px-3 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-40"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium text-xs px-3.5 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 border-0 shadow-sm disabled:opacity-40"
           >
             💳 Payment-API Timeout Lineage
           </button>
@@ -141,7 +141,7 @@ export default function CenterChat({
             type="button"
             onClick={() => onSendMessage("I'm Priya starting work on Checkout-UI today. Any bugs or blockers I should know?")}
             disabled={isAsking}
-            className="bg-[#141927] hover:bg-[#1D2232] border border-white/10 text-gray-300 hover:text-white text-xs px-3 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-40"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium text-xs px-3.5 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 border-0 shadow-sm disabled:opacity-40"
           >
             🚨 Checkout-UI Blockers & SLAs
           </button>
@@ -149,7 +149,7 @@ export default function CenterChat({
             type="button"
             onClick={() => onSendMessage("Trace all decisions and security risks affecting Auth-Service")}
             disabled={isAsking}
-            className="bg-[#141927] hover:bg-[#1D2232] border border-white/10 text-gray-300 hover:text-white text-xs px-3 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 disabled:opacity-40"
+            className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium text-xs px-3.5 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 border-0 shadow-sm disabled:opacity-40"
           >
             🔒 Auth-Service Risks & Decisions
           </button>
@@ -356,7 +356,7 @@ export default function CenterChat({
       </div>
 
       {/* 3. Bottom Command Input Field */}
-      <div className="p-4 border-t border-white/5">
+      <div className="p-4">
         <form onSubmit={handleSubmit} className="relative flex items-center">
           <input
             type="text"
