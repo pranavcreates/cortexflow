@@ -631,7 +631,7 @@ def ask_question(payload: AskRequest):
 
             # Direct, conversational prose answering the user's intent:
             final_answer = (
-                "Payment-API is currently healthy and operating under an active 5-second fail-fast timeout policy "
+                "Payment-API is currently healthy and operating under an active 5-second (5s) fail-fast timeout policy "
                 "introduced via Decision-02 to stop worker queue starvation caused by upstream webhook latency.\n\n"
                 "Arjun Mehta (@Arjun, 95% ownership) and Sarah Jenkins (@Sarah, 85% ownership) are the primary domain owners for this service. "
                 "This active consensus supersedes legacy Decision-01 (30s timeout) and marks Arch_Doc_v1.md as stale due to contradictory documentation drift."
