@@ -350,7 +350,7 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col bg-[#0B0E16] text-white p-4 gap-4 relative">
+    <div className="h-screen w-screen overflow-hidden flex flex-col bg-[#141414] text-white p-4 gap-4 relative">
       
       {/* 1. Top Bento Header (Navbar) */}
       <Navbar
@@ -413,8 +413,8 @@ export default function App() {
 
       {/* Action Transition Overlays (in-between operations) */}
       {isResetting && (
-        <div className="fixed inset-0 z-50 bg-[#0B0E16]/80 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
-          <div className="bg-[#141927] border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col items-center gap-3">
+        <div className="fixed inset-0 z-50 bg-[#141414]/80 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
+          <div className="bg-[#042254] border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col items-center gap-3">
             <RotateCcw className="h-6 w-6 text-[#3B82F6] animate-spin" />
             <div className="text-sm font-medium text-white">Re-seeding FalkorDB Brain...</div>
             <div className="text-xs font-mono text-gray-400">loading... (17 canonical nodes & 26 relationships)</div>
@@ -423,8 +423,8 @@ export default function App() {
       )}
 
       {isSimulating && (
-        <div className="fixed inset-0 z-50 bg-[#0B0E16]/80 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
-          <div className="bg-[#141927] border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col items-center gap-3">
+        <div className="fixed inset-0 z-50 bg-[#141414]/80 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
+          <div className="bg-[#042254] border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col items-center gap-3">
             <FastForward className="h-6 w-6 text-amber-400 animate-pulse" />
             <div className="text-sm font-medium text-white">Advancing Time Decay Clock (+4h)...</div>
             <div className="text-xs font-mono text-gray-400">loading... (re-evaluating SLA commitments & blast radius)</div>
@@ -433,8 +433,8 @@ export default function App() {
       )}
 
       {isSwitchingRole && (
-        <div className="fixed inset-0 z-50 bg-[#0B0E16]/75 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
-          <div className="bg-[#141927] border border-white/10 rounded-2xl p-5 shadow-2xl flex flex-col items-center gap-2.5">
+        <div className="fixed inset-0 z-50 bg-[#141414]/75 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
+          <div className="bg-[#042254] border border-white/10 rounded-2xl p-5 shadow-2xl flex flex-col items-center gap-2.5">
             <ShieldCheck className="h-5 w-5 text-[#3B82F6] animate-pulse" />
             <div className="text-xs font-medium text-white">Switching Security Clearance...</div>
             <div className="text-[10px] font-mono text-gray-400">loading... (applying {role.toUpperCase()} RBAC policies)</div>

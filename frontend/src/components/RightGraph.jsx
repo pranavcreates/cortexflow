@@ -125,7 +125,7 @@ export default function RightGraph({
   const hoveredNode = hoveredNodeId ? nodes.find((n) => n.id === hoveredNodeId) : null;
 
   return (
-    <section className="w-full lg:w-[36%] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden relative select-none">
+    <section className="w-full lg:w-[36%] h-full bg-[#141414] rounded-2xl flex flex-col overflow-hidden relative select-none">
       
       {/* 1. Top Segmented Filter Bar (Clean background hover shift) */}
       <div className="px-6 py-4 flex items-center justify-between gap-2 z-10">
@@ -134,7 +134,7 @@ export default function RightGraph({
         <div 
           role="radiogroup" 
           aria-label="Filter Graph Layers"
-          className="flex items-center bg-[#181C29] border border-white/5 rounded-full p-1 text-xs font-medium"
+          className="flex items-center bg-[#042254] rounded-full p-1 text-xs font-medium shadow-md"
         >
           {['ALL', 'Systems', 'People', 'Truth', 'Drift', 'Blockers'].map((f) => (
             <button
@@ -145,8 +145,8 @@ export default function RightGraph({
               onClick={() => setFilter(f)}
               className={`px-3 py-1 rounded-full transition-colors text-xs ${
                 filter === f
-                  ? 'bg-[#141927] text-white font-medium border border-white/5'
-                  : 'text-gray-400 hover:text-white'
+                  ? 'bg-[#021538] text-white font-medium shadow-sm'
+                  : 'text-blue-200 hover:text-white'
               }`}
             >
               {f}
@@ -155,11 +155,11 @@ export default function RightGraph({
         </div>
 
         {/* View Zoom & Center Controls */}
-        <div className="flex items-center bg-[#181C29] border border-white/5 rounded-full p-1 text-xs">
+        <div className="flex items-center bg-[#042254] rounded-full p-1 text-xs shadow-md">
           <button
             type="button"
             onClick={() => setZoom((z) => Math.min(z + 0.15, 2.0))}
-            className="p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-[#141927] transition-colors"
+            className="p-1.5 rounded-full text-blue-200 hover:text-white hover:bg-[#021538] transition-colors"
             title="Zoom In"
           >
             <ZoomIn className="h-3.5 w-3.5" />
@@ -167,7 +167,7 @@ export default function RightGraph({
           <button
             type="button"
             onClick={() => setZoom((z) => Math.max(z - 0.15, 0.6))}
-            className="p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-[#141927] transition-colors"
+            className="p-1.5 rounded-full text-blue-200 hover:text-white hover:bg-[#021538] transition-colors"
             title="Zoom Out"
           >
             <ZoomOut className="h-3.5 w-3.5" />
@@ -398,12 +398,12 @@ export default function RightGraph({
 
         {/* Hover Popover Tooltip */}
         {hoveredNode && !selectedNode && (
-          <div className="absolute top-4 left-4 bg-[#181C29] border border-white/5 rounded-xl p-4 text-xs pointer-events-none z-20 space-y-1">
+          <div className="absolute top-4 left-4 bg-[#042254] rounded-xl p-4 text-xs pointer-events-none z-20 space-y-1 shadow-lg">
             <div className="flex items-center gap-2">
               <span className="font-medium text-white">
                 {hoveredNode.properties?.name || hoveredNode.id}
               </span>
-              <span className="text-[10px] font-mono text-gray-400 px-2 py-0.5 rounded-full bg-[#101420] border border-white/5">
+              <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
                 {hoveredNode.label}
               </span>
             </div>

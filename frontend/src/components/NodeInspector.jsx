@@ -32,21 +32,21 @@ export default function NodeInspector({
   };
 
   return (
-    <div className="absolute bottom-4 left-4 right-4 bg-[#181C29] rounded-2xl border border-white/5 p-6 text-xs z-30 select-none animate-in fade-in slide-in-from-bottom-2 duration-150">
+    <div className="absolute bottom-4 left-4 right-4 bg-[#042254] rounded-2xl shadow-2xl p-6 text-xs z-30 select-none animate-in fade-in slide-in-from-bottom-2 duration-150">
       
       {/* 1. Header: Title, Label & Dismiss */}
-      <div className="flex items-center justify-between pb-3 border-b border-white/5">
+      <div className="flex items-center justify-between pb-3 border-b border-white/10">
         <div className="flex items-center gap-2.5">
           <span className="font-medium text-white text-sm tracking-tight">
             {props.name || node.id}
           </span>
           
-          <span className="text-[10px] font-mono text-gray-400 px-2 py-0.5 rounded-full bg-[#101420] border border-white/5">
+          <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
             {node.label} · R{node.ring || 3}
           </span>
 
           {isRestricted && (
-            <span className="text-[10px] font-mono text-purple-300 px-2.5 py-0.5 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center gap-1">
+            <span className="text-[10px] font-mono text-purple-200 px-2.5 py-0.5 rounded-full bg-purple-500/20 flex items-center gap-1">
               <Shield className="h-3 w-3" />
               <span>Restricted</span>
             </span>
@@ -56,7 +56,7 @@ export default function NodeInspector({
         <button
           type="button"
           onClick={onClose}
-          className="flat-pill-btn p-1 text-gray-400 hover:text-white bg-[#101420] transition-colors"
+          className="p-1 rounded-full text-blue-200 hover:text-white bg-[#021538] hover:bg-[#010e24] transition-colors"
           title="Close inspector"
         >
           <X className="h-4 w-4" />

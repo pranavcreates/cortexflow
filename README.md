@@ -11,9 +11,9 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ### Hackathon Submission Companion Assets
-- 📖 **Executive Project Overview**: [PROJECT_OVERVIEW.md](PROJECT_OVERVIEW.md)
-- 📝 **Hackathon Companion Article**: [Why Vector RAG Fails at Company Knowledge](WHY_VECTOR_RAG_FAILS.md)
-- 🎬 **2-Minute Demo Video Recording Script**: [DEMO_WALKTHROUGH_SCRIPT.md](DEMO_WALKTHROUGH_SCRIPT.md)
+- 📖 **Executive Project Overview**: [PROJECT_OVERVIEW.md](docs/PROJECT_OVERVIEW.md)
+- 📝 **Hackathon Companion Article**: [Why Vector RAG Fails at Company Knowledge](docs/WHY_VECTOR_RAG_FAILS.md)
+- 🎬 **2-Minute Demo Video Recording Script**: [DEMO_WALKTHROUGH_SCRIPT.md](docs/DEMO_WALKTHROUGH_SCRIPT.md)
 
 ---
 
@@ -338,9 +338,12 @@ cortexflow/
 │   ├── package.json                     # Frontend npm dependencies
 │   ├── vite.config.js                   # Vite configuration
 │   └── tailwind.config.js               # Tailwind CSS theme configuration
-├── DEMO_WALKTHROUGH_SCRIPT.md           # 2-minute demo video recording script
-├── PROJECT_OVERVIEW.md                  # Executive overview of CortexFlow
-├── WHY_VECTOR_RAG_FAILS.md              # Technical companion article
+├── docs/                                # Technical companion articles & demo scripts
+│   ├── DEMO_WALKTHROUGH_SCRIPT.md
+│   ├── PROJECT_GOALS.md
+│   ├── PROJECT_OVERVIEW.md
+│   ├── PROJECT_SPEC.md
+│   └── WHY_VECTOR_RAG_FAILS.md
 ├── LICENSE                              # MIT License
 └── README.md                            # Project documentation
 ```

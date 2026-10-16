@@ -122,7 +122,7 @@ export default function CenterChat({
   };
 
   return (
-    <section className="w-full lg:w-[38%] h-full bg-[#2b2b2b] rounded-2xl flex flex-col overflow-hidden select-none">
+    <section className="w-full lg:w-[38%] h-full bg-[#141414] rounded-2xl flex flex-col overflow-hidden select-none">
       
 
 
@@ -164,23 +164,23 @@ export default function CenterChat({
           return (
             <div
               key={idx}
-              className={`rounded-xl p-6 transition-colors space-y-3 ${
+              className={`rounded-xl p-6 transition-colors space-y-3 shadow-md ${
                 isUser
-                  ? 'bg-[#181C29] border border-white/10 max-w-[90%] ml-auto'
-                  : 'bg-[#181C29] border border-white/5'
+                  ? 'bg-[#042254] max-w-[90%] ml-auto'
+                  : 'bg-[#042254]'
               }`}
             >
               {/* Header: Sender Info & Telemetry */}
-              <div className="flex items-center justify-between text-xs text-gray-400 pb-2 border-b border-white/5">
+              <div className="flex items-center justify-between text-xs text-blue-200/80 pb-2 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <div className="h-5 w-5 rounded-full flex items-center justify-center bg-[#141927] border border-white/5 text-gray-300">
+                  <div className="h-5 w-5 rounded-full flex items-center justify-center bg-[#021538] text-gray-200">
                     {isUser ? <User className="h-3 w-3" /> : <Cpu className="h-3 w-3 text-[#3B82F6]" />}
                   </div>
                   <span className="font-medium text-white text-xs">
                     {isUser ? 'Engineer Prompt' : 'CortexFlow Brain'}
                   </span>
                   {!isUser && msg.latency_ms && (
-                    <span className="text-[10px] font-mono text-gray-400 px-2 py-0.5 rounded-full bg-[#101420] border border-white/5">
+                    <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
                       {msg.latency_ms}ms cypher
                     </span>
                   )}
@@ -273,7 +273,7 @@ export default function CenterChat({
                         key={lIdx}
                         type="button"
                         onClick={() => onSelectNode(targetId)}
-                        className="px-2.5 py-1 rounded-md bg-[#181C29] border border-white/5 text-cyan-400 hover:text-cyan-300 hover:border-cyan-500/30 font-mono text-[10px] flex items-center gap-1.5 transition-all cursor-pointer shadow-sm group"
+                        className="px-2.5 py-1 rounded-md bg-[#021538] text-cyan-300 hover:text-cyan-200 font-mono text-[10px] flex items-center gap-1.5 transition-all cursor-pointer shadow-sm group"
                         title={`Inspect ${item}`}
                       >
                         <span>{item}</span>
@@ -323,18 +323,18 @@ export default function CenterChat({
 
         {/* Loading Skeleton Indicator */}
         {isAsking && (
-          <div className="rounded-xl bg-[#181C29] border border-white/5 p-6 space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-white/5">
+          <div className="rounded-xl bg-[#042254] shadow-md p-6 space-y-3">
+            <div className="flex items-center justify-between pb-2 border-b border-white/10">
               <div className="flex items-center gap-2">
-                <div className="h-5 w-5 rounded-full bg-[#141927] border border-white/5 flex items-center justify-center">
+                <div className="h-5 w-5 rounded-full bg-[#021538] flex items-center justify-center">
                   <Sparkles className="h-3 w-3 text-[#3B82F6] animate-pulse" />
                 </div>
                 <span className="font-medium text-white text-xs">CortexFlow Brain</span>
-                <span className="text-[10px] font-mono text-gray-400 px-2 py-0.5 rounded-full bg-[#101420] border border-white/5">
+                <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
                   loading...
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-gray-500 animate-pulse">executing Cypher</span>
+              <span className="text-[10px] font-mono text-blue-200 animate-pulse">executing Cypher</span>
             </div>
 
             <div className="space-y-2">
@@ -363,7 +363,7 @@ export default function CenterChat({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask CortexFlow brain (e.g. 'Why did we change Payment-API timeout?')..."
-            className="w-full h-11 rounded-full bg-[#181C29] border border-white/5 pl-4 pr-28 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-white/20 transition-colors"
+            className="w-full h-11 rounded-full bg-[#042254] pl-4 pr-28 text-xs text-white placeholder-blue-200/60 focus:outline-none transition-colors shadow-sm"
           />
           <div className="absolute right-1.5 flex items-center gap-1">
             <button
