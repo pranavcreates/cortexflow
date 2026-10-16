@@ -76,7 +76,7 @@ export default function MainSkeleton() {
         {/* ----------------------------------------------------------------- */}
         {/* Left Panel Skeleton: Ingestion, Commitments, Drift */}
         {/* ----------------------------------------------------------------- */}
-        <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#141927] rounded-2xl border border-white/5 flex flex-col overflow-hidden p-6 space-y-8">
+        <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden p-6 space-y-8">
           
           {/* Section 1: Ingestion Skeleton */}
           <section className="space-y-4">
@@ -152,7 +152,7 @@ export default function MainSkeleton() {
         {/* ----------------------------------------------------------------- */}
         {/* Center Panel Skeleton: AI Agent Reasoning Console */}
         {/* ----------------------------------------------------------------- */}
-        <section className="w-full lg:w-[38%] h-full bg-[#141927] rounded-2xl border border-white/5 flex flex-col overflow-hidden">
+        <section className="w-full lg:w-[38%] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden">
           
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             
@@ -217,7 +217,7 @@ export default function MainSkeleton() {
         {/* ----------------------------------------------------------------- */}
         {/* Right Panel Skeleton: Concentric 3-Ring Visualizer */}
         {/* ----------------------------------------------------------------- */}
-        <section className="w-full lg:w-[36%] h-full bg-[#141927] rounded-2xl border border-white/5 flex flex-col overflow-hidden relative">
+        <section className="w-full lg:w-[36%] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden relative">
           
           {/* Filter Bar Skeleton */}
           <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between z-10">

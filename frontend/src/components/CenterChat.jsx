@@ -122,7 +122,7 @@ export default function CenterChat({
   };
 
   return (
-    <section className="w-full lg:w-[38%] h-full bg-[#141927] rounded-2xl border border-white/5 flex flex-col overflow-hidden select-none">
+    <section className="w-full lg:w-[38%] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden select-none">
       
 
 

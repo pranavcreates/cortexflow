@@ -40,7 +40,7 @@ export default function LeftPanel({
   };
 
   return (
-    <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#141927] rounded-2xl border border-white/5 flex flex-col overflow-hidden select-none">
+    <aside className="w-full lg:w-[26%] lg:min-w-[320px] h-full bg-[#545454] rounded-2xl border border-white/5 flex flex-col overflow-hidden select-none">
       
       {/* Scrollable Container with generous vertical breathing room (space-y-8) */}
       <div className="flex-1 overflow-y-auto p-6 space-y-8">
