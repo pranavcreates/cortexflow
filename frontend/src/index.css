@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, system-ui, sans-serif;
+  color-scheme: dark;
+  background-color: #0B0E16;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code, pre, .font-mono {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Monaco, Consolas, monospace;
+}
+
+/* Minimalist Dark Scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Flat Pill Button: simple background color shift only, no text-shadow, no box-shadow */
+.flat-pill-btn {
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.flat-pill-btn:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+::selection {
+  background-color: rgba(59, 130, 246, 0.25);
+  color: #FFFFFF;
+}
+
+/* Skeleton Loading Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(255, 255, 255, 0.07) 37%,
+    rgba(255, 255, 255, 0.02) 63%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
