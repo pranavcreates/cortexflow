@@ -149,7 +149,7 @@ The baseline graph seeds a realistic production scenario:
 
 2. **`POST /ask`**:
    - Natural language Q&A with FalkorDB Cypher queries.
-   - Built-in multi-hop Cypher queries with Gemini integration (or deterministic fallback when no API key is provided).
+   - Built-in multi-hop Cypher queries with deterministic graph reasoning.
    - Returns answer, sources, executed Cypher, traversed IDs (`highlighted_ids`), and **proactive alerts** calculating multi-hop blast radius.
    - Read-only Cypher query security guardrail (`DELETE`, `DROP`, `DETACH`, `REMOVE`, `SET` blocked).
 

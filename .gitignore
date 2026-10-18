@@ -41,9 +41,14 @@ frontend/dist-ssr/
 
 # Environment Variables & Secrets (Keep your keys safe!)
 .env
+.env.*
 .env.local
 .env.*.local
 *.env
+backend/.env
+backend/.env.*
+!.env.example
+!backend/.env.example
 
 # IDE & Editor files
 .vscode/*

@@ -37,17 +37,17 @@ export default function NodeInspector({
       {/* 1. Header: Title, Label & Dismiss */}
       <div className="flex items-center justify-between pb-3 border-b border-white/10">
         <div className="flex items-center gap-2.5">
-          <span className="font-medium text-white text-sm tracking-tight">
+          <span className="font-semibold text-white text-base tracking-tight">
             {props.name || node.id}
           </span>
           
-          <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
+          <span className="text-xs font-mono text-blue-100 px-2.5 py-0.5 rounded-full bg-[#021538] border border-blue-500/20 font-medium">
             {node.label} · R{node.ring || 3}
           </span>
 
           {isRestricted && (
-            <span className="text-[10px] font-mono text-purple-200 px-2.5 py-0.5 rounded-full bg-purple-500/20 flex items-center gap-1">
-              <Shield className="h-3 w-3" />
+            <span className="text-xs font-mono text-purple-200 px-2.5 py-0.5 rounded-full bg-purple-500/20 border border-purple-500/30 flex items-center gap-1 font-medium">
+              <Shield className="h-3.5 w-3.5 text-purple-300" />
               <span>Restricted</span>
             </span>
           )}
@@ -56,7 +56,7 @@ export default function NodeInspector({
         <button
           type="button"
           onClick={onClose}
-          className="p-1 rounded-full text-blue-200 hover:text-white bg-[#021538] hover:bg-[#010e24] transition-colors"
+          className="p-1.5 rounded-full text-blue-200 hover:text-white bg-[#021538] hover:bg-[#010e24] transition-colors border border-white/5"
           title="Close inspector"
         >
           <X className="h-4 w-4" />
@@ -64,21 +64,21 @@ export default function NodeInspector({
       </div>
 
       {/* 2. Key Attributes Inspection */}
-      <div className="py-3 space-y-2 text-xs">
+      <div className="py-3 space-y-2 text-sm text-blue-100">
         {node.label === 'Person' && (
-          <div className="flex items-center gap-4 text-gray-400">
-            <span>Handle: <strong className="text-[#3B82F6] font-mono font-medium">{props.handle}</strong></span>
+          <div className="flex items-center gap-4 text-blue-200 text-xs md:text-sm">
+            <span>Handle: <strong className="text-[#3B82F6] font-mono font-semibold">{props.handle}</strong></span>
             <span>Role: <strong className="text-white font-medium">{props.role}</strong></span>
             <span>Team: <strong className="text-white font-medium">{props.team}</strong></span>
           </div>
         )}
 
         {node.label === 'System' && (
-          <div className="flex items-center gap-4 text-gray-400">
-            <span>Tier: <strong className="text-white font-medium">{props.tier}</strong></span>
+          <div className="flex items-center gap-4 text-blue-200 text-xs md:text-sm">
+            <span>Tier: <strong className="text-white font-semibold">{props.tier}</strong></span>
             <span>
               Health:{' '}
-              <strong className={props.status === 'degraded' ? 'text-rose-400 font-medium' : 'text-gray-300 font-medium'}>
+              <strong className={props.status === 'degraded' ? 'text-rose-400 font-semibold' : 'text-emerald-400 font-semibold'}>
                 {props.status}
               </strong>
             </span>
@@ -86,13 +86,13 @@ export default function NodeInspector({
         )}
 
         {node.label === 'Ticket' && (
-          <div className="flex items-center gap-4 text-gray-400">
-            <span>Kind: <strong className="text-white font-medium">{props.kind}</strong></span>
-            <span>Status: <strong className="text-white font-medium">{props.status}</strong></span>
+          <div className="flex items-center gap-4 text-blue-200 text-xs md:text-sm">
+            <span>Kind: <strong className="text-white font-semibold">{props.kind}</strong></span>
+            <span>Status: <strong className="text-white font-semibold">{props.status}</strong></span>
             {props.remaining_hours !== undefined && (
               <span>
                 SLA:{' '}
-                <strong className={`font-mono font-medium ${props.remaining_hours <= 0 ? 'text-rose-400' : 'text-gray-300'}`}>
+                <strong className={`font-mono font-semibold ${props.remaining_hours <= 0 ? 'text-rose-400' : 'text-amber-300'}`}>
                   {props.remaining_hours <= 0 ? 'OVERDUE (0h)' : `${props.remaining_hours}h left`}
                 </strong>
               </span>
@@ -101,61 +101,60 @@ export default function NodeInspector({
         )}
 
         {(props.title || props.content) && (
-          <div className="bg-[#101420] border border-white/5 p-3 rounded-lg text-gray-400 text-xs leading-relaxed">
+          <div className="bg-[#021538] border border-white/5 p-3.5 rounded-lg text-blue-50 text-xs md:text-sm leading-relaxed font-normal">
             {props.title || props.content}
           </div>
         )}
       </div>
 
       {/* 3. Graph Lineage Relationships */}
-      <div className="pt-2.5 border-t border-white/5 grid grid-cols-2 gap-3 text-xs">
+      <div className="pt-2.5 border-t border-white/10 grid grid-cols-2 gap-3 text-xs">
         
         {/* Outbound Edges */}
         <div>
-          <span className="text-gray-500 flex items-center gap-1 mb-1 font-medium text-[10px] uppercase tracking-wide">
-            <ArrowRight className="h-3 w-3 text-[#3B82F6]" />
+          <span className="text-blue-200 flex items-center gap-1.5 mb-1.5 font-semibold text-xs uppercase tracking-wide">
+            <ArrowRight className="h-3.5 w-3.5 text-[#3B82F6]" />
             <span>Outbound ({outbound.length})</span>
           </span>
-          <div className="space-y-1 max-h-16 overflow-y-auto pr-1">
+          <div className="space-y-1 max-h-20 overflow-y-auto pr-1">
             {outbound.map((edge, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => onSelectNode(edge.target)}
-                className="flat-pill-btn w-full text-left truncate text-gray-400 hover:text-white bg-[#101420] hover:bg-[#151927] px-2.5 py-1 flex items-center gap-1.5 transition-colors"
+                className="w-full text-left truncate text-blue-100 hover:text-white bg-[#021538] hover:bg-[#062d6e] px-3 py-1.5 rounded-md flex items-center gap-2 transition-colors border border-white/5 text-xs font-medium"
               >
-                <span className="text-[#3B82F6] font-mono text-[10px]">{edge.type}</span>
-                <span className="text-gray-600">→</span>
+                <span className="text-[#3B82F6] font-mono text-xs">{edge.type}</span>
+                <span className="text-gray-400">→</span>
                 <span className="truncate">{getNodeName(edge.target)}</span>
               </button>
             ))}
-            {outbound.length === 0 && <span className="text-gray-500 italic text-[10px]">None</span>}
+            {outbound.length === 0 && <span className="text-gray-400 italic text-xs">None</span>}
           </div>
         </div>
 
         {/* Inbound Edges */}
         <div>
-          <span className="text-gray-500 flex items-center gap-1 mb-1 font-medium text-[10px] uppercase tracking-wide">
-            <ArrowLeft className="h-3 w-3 text-gray-400" />
+          <span className="text-blue-200 flex items-center gap-1.5 mb-1.5 font-semibold text-xs uppercase tracking-wide">
+            <ArrowLeft className="h-3.5 w-3.5 text-gray-300" />
             <span>Inbound ({inbound.length})</span>
           </span>
-          <div className="space-y-1 max-h-16 overflow-y-auto pr-1">
+          <div className="space-y-1 max-h-20 overflow-y-auto pr-1">
             {inbound.map((edge, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => onSelectNode(edge.source)}
-                className="flat-pill-btn w-full text-left truncate text-gray-400 hover:text-white bg-[#101420] hover:bg-[#151927] px-2.5 py-1 flex items-center gap-1.5 transition-colors"
+                className="w-full text-left truncate text-blue-100 hover:text-white bg-[#021538] hover:bg-[#062d6e] px-3 py-1.5 rounded-md flex items-center gap-2 transition-colors border border-white/5 text-xs font-medium"
               >
-                <span className="text-gray-400 font-mono text-[10px]">{edge.type}</span>
-                <span className="text-gray-600">←</span>
+                <span className="text-gray-300 font-mono text-xs">{edge.type}</span>
+                <span className="text-gray-400">←</span>
                 <span className="truncate">{getNodeName(edge.source)}</span>
               </button>
             ))}
-            {inbound.length === 0 && <span className="text-gray-500 italic text-[10px]">None</span>}
+            {inbound.length === 0 && <span className="text-gray-400 italic text-xs">None</span>}
           </div>
         </div>
-
       </div>
 
     </div>

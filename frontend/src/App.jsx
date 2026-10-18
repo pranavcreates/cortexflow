@@ -8,7 +8,66 @@ import { RotateCcw, FastForward, ShieldCheck } from 'lucide-react';
 
 const API_BASE = 'http://localhost:8000';
 
+export const COMPANY_USERS = [
+  {
+    id: 'p_arjun',
+    name: 'Arjun Mehta',
+    handle: '@Arjun',
+    role: 'Senior Backend Eng',
+    team: 'Backend Dev',
+    department: 'Core Engineering',
+    clearance: 'senior',
+    avatar: '👨‍💻',
+    email: 'arjun@cortexflow.internal',
+  },
+  {
+    id: 'p_priya',
+    name: 'Priya Sharma',
+    handle: '@Priya',
+    role: 'UI/UX & Frontend Lead',
+    team: 'Design & Frontend',
+    department: 'Product Design',
+    clearance: 'senior',
+    avatar: '🎨',
+    email: 'priya@cortexflow.internal',
+  },
+  {
+    id: 'p_rohit',
+    name: 'Rohit Verma',
+    handle: '@Rohit',
+    role: 'Security & QA Lead',
+    team: 'SecOps & QA',
+    department: 'Security & Quality Assurance',
+    clearance: 'senior',
+    avatar: '🧪',
+    email: 'rohit@cortexflow.internal',
+  },
+  {
+    id: 'p_sarah',
+    name: 'Sarah Jenkins',
+    handle: '@Sarah',
+    role: 'Staff Architect',
+    team: 'Architecture & Platform',
+    department: 'Architecture',
+    clearance: 'senior',
+    avatar: '🏗️',
+    email: 'sarah@cortexflow.internal',
+  },
+  {
+    id: 'intern',
+    name: 'Intern Profile',
+    handle: '@Intern',
+    role: 'Junior Developer',
+    team: 'Engineering (Guest/Intern)',
+    department: 'Core Engineering',
+    clearance: 'intern',
+    avatar: '🔒',
+    email: 'intern@cortexflow.internal',
+  },
+];
+
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(COMPANY_USERS[0]);
   const [initialLoading, setInitialLoading] = useState(true);
   const [isSwitchingRole, setIsSwitchingRole] = useState(false);
 
@@ -102,8 +161,28 @@ export default function App() {
   const handleRoleChange = async (newRole) => {
     setIsSwitchingRole(true);
     setRole(newRole);
+    if (newRole === 'intern' && currentUser.clearance !== 'intern') {
+      const internUser = COMPANY_USERS.find((u) => u.id === 'intern') || COMPANY_USERS[4];
+      setCurrentUser(internUser);
+    } else if (newRole === 'senior' && currentUser.clearance === 'intern') {
+      const arjunUser = COMPANY_USERS.find((u) => u.id === 'p_arjun') || COMPANY_USERS[0];
+      setCurrentUser(arjunUser);
+    }
     await fetchGraph(newRole);
     setTimeout(() => setIsSwitchingRole(false), 350);
+  };
+
+  // Handle active user persona switch (automatically syncs Senior / Intern role)
+  const handleUserChange = async (userId) => {
+    const selected = COMPANY_USERS.find((u) => u.id === userId) || COMPANY_USERS[0];
+    setCurrentUser(selected);
+    const targetRole = selected.clearance === 'intern' ? 'intern' : 'senior';
+    if (targetRole !== role) {
+      setIsSwitchingRole(true);
+      setRole(targetRole);
+      await fetchGraph(targetRole);
+      setTimeout(() => setIsSwitchingRole(false), 350);
+    }
   };
 
   // Handle sending a query to AI agent
@@ -116,6 +195,7 @@ export default function App() {
       {
         sender: 'user',
         text: question,
+        user_context: currentUser,
       },
     ]);
 
@@ -123,7 +203,12 @@ export default function App() {
       const res = await fetch(`${API_BASE}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question, role }),
+        body: JSON.stringify({
+          question,
+          role,
+          user_id: currentUser.id,
+          team: currentUser.team,
+        }),
       });
 
       if (!res.ok) {
@@ -144,6 +229,9 @@ export default function App() {
           latency_ms: data.latency_ms,
           highlighted_ids: data.highlighted_ids,
           proactive_alerts: data.proactive_alerts,
+          compliance_verdict: data.compliance_verdict,
+          vector_rag_comparison: data.vector_rag_comparison,
+          user_context: data.user_context || currentUser,
         },
       ]);
 
@@ -350,9 +438,9 @@ export default function App() {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col bg-[#141414] text-white p-4 gap-4 relative">
+    <div className="h-screen w-screen overflow-hidden flex flex-col bg-[#141414] text-white relative">
       
-      {/* 1. Top Bento Header (Navbar) */}
+      {/* 1. Top Enterprise Header (Full Width) */}
       <Navbar
         stats={graphData.stats}
         latencyMs={latencyMs}
@@ -363,10 +451,13 @@ export default function App() {
         isSimulating={isSimulating}
         isResetting={isResetting}
         isConnected={isConnected}
+        currentUser={currentUser}
+        onUserChange={handleUserChange}
+        users={COMPANY_USERS}
       />
 
       {/* 2. Main 3-Section Bento Box Layout (Padding gaps between rounded-2xl panels) */}
-      <main className="flex-1 w-full overflow-hidden flex flex-col lg:flex-row gap-4">
+      <main className="flex-1 w-full overflow-hidden flex flex-col lg:flex-row gap-4 p-4">
         
         {/* Left Bento: Knowledge Operations (26%) */}
         <LeftPanel
@@ -394,6 +485,7 @@ export default function App() {
           }}
           onHighlightPath={(ids) => setHighlightedIds(ids)}
           isAsking={isAsking}
+          currentUser={currentUser}
         />
 
         {/* Right Bento: Brain Topology Visualizer (36%) */}
@@ -416,8 +508,8 @@ export default function App() {
         <div className="fixed inset-0 z-50 bg-[#141414]/80 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
           <div className="bg-[#042254] border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col items-center gap-3">
             <RotateCcw className="h-6 w-6 text-[#3B82F6] animate-spin" />
-            <div className="text-sm font-medium text-white">Re-seeding FalkorDB Brain...</div>
-            <div className="text-xs font-mono text-gray-400">loading... (17 canonical nodes & 26 relationships)</div>
+            <div className="text-sm font-sans font-medium text-white">Re-seeding FalkorDB Brain...</div>
+            <div className="text-xs font-sans text-gray-300">17 canonical nodes & 26 relationships</div>
           </div>
         </div>
       )}
@@ -425,9 +517,9 @@ export default function App() {
       {isSimulating && (
         <div className="fixed inset-0 z-50 bg-[#141414]/80 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
           <div className="bg-[#042254] border border-white/10 rounded-2xl p-6 shadow-2xl flex flex-col items-center gap-3">
-            <FastForward className="h-6 w-6 text-amber-400 animate-pulse" />
-            <div className="text-sm font-medium text-white">Advancing Time Decay Clock (+4h)...</div>
-            <div className="text-xs font-mono text-gray-400">loading... (re-evaluating SLA commitments & blast radius)</div>
+            <FastForward className="h-6 w-6 text-amber-400" />
+            <div className="text-sm font-sans font-medium text-white">Advancing Time Decay Clock (+4h)...</div>
+            <div className="text-xs font-sans text-gray-300">Re-evaluating SLA commitments & blast radius</div>
           </div>
         </div>
       )}
@@ -435,9 +527,9 @@ export default function App() {
       {isSwitchingRole && (
         <div className="fixed inset-0 z-50 bg-[#141414]/75 backdrop-blur-sm flex flex-col items-center justify-center pointer-events-none select-none">
           <div className="bg-[#042254] border border-white/10 rounded-2xl p-5 shadow-2xl flex flex-col items-center gap-2.5">
-            <ShieldCheck className="h-5 w-5 text-[#3B82F6] animate-pulse" />
-            <div className="text-xs font-medium text-white">Switching Security Clearance...</div>
-            <div className="text-[10px] font-mono text-gray-400">loading... (applying {role.toUpperCase()} RBAC policies)</div>
+            <ShieldCheck className="h-5 w-5 text-[#3B82F6]" />
+            <div className="text-xs font-sans font-medium text-white">Switching Security Clearance...</div>
+            <div className="text-[11px] font-sans text-gray-300">Applying {role.toUpperCase()} RBAC policies</div>
           </div>
         </div>
       )}

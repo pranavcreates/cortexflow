@@ -18,16 +18,19 @@ export default {
       },
       fontFamily: {
         sans: [
+          'Geist',
           '-apple-system',
           'BlinkMacSystemFont',
-          '"SF Pro Text"',
-          '"SF Pro Display"',
+          '"Segoe UI"',
+          'Roboto',
           'Inter',
           'system-ui',
           'sans-serif',
         ],
         mono: [
-          '"SF Mono"',
+          '"Geist Mono"',
+          'ui-monospace',
+          'SFMono-Regular',
           '"JetBrains Mono"',
           'Menlo',
           'Monaco',

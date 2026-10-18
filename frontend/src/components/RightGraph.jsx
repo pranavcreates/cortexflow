@@ -134,7 +134,7 @@ export default function RightGraph({
         <div 
           role="radiogroup" 
           aria-label="Filter Graph Layers"
-          className="flex items-center bg-[#042254] rounded-full p-1 text-xs font-medium shadow-md"
+          className="flex items-center bg-[#042254] rounded-full p-1 text-xs font-semibold shadow-md border border-white/5"
         >
           {['ALL', 'Systems', 'People', 'Truth', 'Drift', 'Blockers'].map((f) => (
             <button
@@ -143,9 +143,9 @@ export default function RightGraph({
               role="radio"
               aria-checked={filter === f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1 rounded-full transition-colors text-xs ${
+              className={`px-3.5 py-1 rounded-full transition-colors text-xs font-semibold ${
                 filter === f
-                  ? 'bg-[#021538] text-white font-medium shadow-sm'
+                  ? 'bg-[#021538] text-white shadow-sm border border-white/10'
                   : 'text-blue-200 hover:text-white'
               }`}
             >
@@ -155,7 +155,7 @@ export default function RightGraph({
         </div>
 
         {/* View Zoom & Center Controls */}
-        <div className="flex items-center bg-[#042254] rounded-full p-1 text-xs shadow-md">
+        <div className="flex items-center bg-[#042254] rounded-full p-1 text-xs shadow-md border border-white/5">
           <button
             type="button"
             onClick={() => setZoom((z) => Math.min(z + 0.15, 2.0))}
@@ -179,7 +179,7 @@ export default function RightGraph({
               setPan({ x: 0, y: 0 });
               onClearHighlight();
             }}
-            className="p-1.5 rounded-full text-gray-400 hover:text-white hover:bg-[#141927] transition-colors"
+            className="p-1.5 rounded-full text-gray-300 hover:text-white hover:bg-[#021538] transition-colors"
             title="Reset Topology View"
           >
             <Maximize2 className="h-3.5 w-3.5" />
@@ -213,7 +213,7 @@ export default function RightGraph({
                 strokeWidth="1"
                 strokeDasharray="3 3"
               />
-              <text x={cx} y={cy - R1 - 8} textAnchor="middle" fill="#6B7280" fontSize="9" fontFamily="SF Mono, monospace">
+              <text x={cx} y={cy - R1 - 8} textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600" fontFamily="Geist Mono, monospace" letterSpacing="0.05em">
                 R1 · CORE SYSTEMS
               </text>
 
@@ -223,11 +223,11 @@ export default function RightGraph({
                 cy={cy}
                 r={R2}
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.05)"
+                stroke="rgba(255, 255, 255, 0.08)"
                 strokeWidth="1"
                 strokeDasharray="3 3"
               />
-              <text x={cx} y={cy - R2 - 8} textAnchor="middle" fill="#6B7280" fontSize="9" fontFamily="SF Mono, monospace">
+              <text x={cx} y={cy - R2 - 8} textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600" fontFamily="Geist Mono, monospace" letterSpacing="0.05em">
                 R2 · OWNERSHIP & PEOPLE
               </text>
 
@@ -237,11 +237,11 @@ export default function RightGraph({
                 cy={cy}
                 r={R3}
                 fill="none"
-                stroke="rgba(255, 255, 255, 0.05)"
+                stroke="rgba(255, 255, 255, 0.08)"
                 strokeWidth="1"
                 strokeDasharray="3 3"
               />
-              <text x={cx} y={cy - R3 - 8} textAnchor="middle" fill="#6B7280" fontSize="9" fontFamily="SF Mono, monospace">
+              <text x={cx} y={cy - R3 - 8} textAnchor="middle" fill="#94A3B8" fontSize="11" fontWeight="600" fontFamily="Geist Mono, monospace" letterSpacing="0.05em">
                 R3 · DECISIONS & TICKETS
               </text>
             </g>
@@ -351,12 +351,12 @@ export default function RightGraph({
                     {node.label === 'Person' && (
                       <text
                         x={node.x}
-                        y={node.y + 3.5}
+                        y={node.y + 4}
                         textAnchor="middle"
                         fill="#FFFFFF"
-                        fontSize="9"
-                        fontWeight="600"
-                        fontFamily="-apple-system, sans-serif"
+                        fontSize="10.5"
+                        fontWeight="700"
+                        fontFamily="Geist, sans-serif"
                         className="pointer-events-none select-none"
                       >
                         {getInitials(node.properties?.name)}
@@ -366,12 +366,12 @@ export default function RightGraph({
                     {/* Node Label Below */}
                     <text
                       x={node.x}
-                      y={node.y + radius + 12}
+                      y={node.y + radius + 13}
                       textAnchor="middle"
-                      fill={isSelected || isHovered ? '#FFFFFF' : '#9CA3AF'}
-                      fontSize="9.5"
-                      fontWeight={isSelected ? '500' : '400'}
-                      fontFamily="-apple-system, sans-serif"
+                      fill={isSelected || isHovered ? '#FFFFFF' : '#E2E8F0'}
+                      fontSize="11"
+                      fontWeight={isSelected ? '600' : '500'}
+                      fontFamily="Geist, sans-serif"
                       className="pointer-events-none select-none"
                     >
                       {node.properties?.name || node.id}
@@ -387,10 +387,10 @@ export default function RightGraph({
         {/* Loading overlay when nodes are not yet loaded */}
         {nodes.length === 0 && (
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10">
-            <div className="px-4 py-2 rounded-full bg-[#141927]/90 border border-white/10 backdrop-blur-md flex items-center gap-2 shadow-2xl">
-              <span className="h-2 w-2 rounded-full bg-[#3B82F6] animate-ping" />
-              <span className="text-xs font-mono text-gray-300">
-                loading...
+            <div className="px-4 py-2 rounded-full bg-[#042254]/90 border border-white/10 backdrop-blur-md flex items-center gap-2.5 shadow-2xl">
+              <span className="h-2 w-2 rounded-full bg-[#3B82F6]" />
+              <span className="text-xs font-sans font-medium text-white tracking-wide">
+                Loading graph topology...
               </span>
             </div>
           </div>
@@ -398,23 +398,23 @@ export default function RightGraph({
 
         {/* Hover Popover Tooltip */}
         {hoveredNode && !selectedNode && (
-          <div className="absolute top-4 left-4 bg-[#042254] rounded-xl p-4 text-xs pointer-events-none z-20 space-y-1 shadow-lg">
+          <div className="absolute top-4 left-4 bg-[#042254] rounded-xl p-4 text-xs pointer-events-none z-20 space-y-1.5 shadow-xl border border-white/10">
             <div className="flex items-center gap-2">
-              <span className="font-medium text-white">
+              <span className="font-semibold text-white text-sm">
                 {hoveredNode.properties?.name || hoveredNode.id}
               </span>
-              <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
+              <span className="text-xs font-mono text-blue-100 px-2.5 py-0.5 rounded-full bg-[#021538] border border-blue-500/20 font-medium">
                 {hoveredNode.label}
               </span>
             </div>
             {hoveredNode.properties?.role && (
-              <div className="text-gray-400 text-xs">
+              <div className="text-blue-100 text-xs font-normal">
                 {hoveredNode.properties.role} · {hoveredNode.properties.team}
               </div>
             )}
             {hoveredNode.properties?.status && (
-              <div className="text-[11px] text-gray-400">
-                Status: <strong className={hoveredNode.properties.status === 'degraded' ? 'text-rose-400' : 'text-gray-300'}>
+              <div className="text-xs text-blue-200">
+                Status: <strong className={hoveredNode.properties.status === 'degraded' ? 'text-rose-400 font-semibold' : 'text-emerald-400 font-semibold'}>
                   {hoveredNode.properties.status}
                 </strong>
               </div>

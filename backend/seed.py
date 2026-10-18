@@ -83,15 +83,21 @@ def seed_graph():
         name: 'Arjun Mehta',
         handle: '@Arjun',
         role: 'Senior Backend Eng',
-        team: 'Core Infra',
+        team: 'Backend Dev',
+        department: 'Core Engineering',
+        clearance: 'senior',
+        email: 'arjun@cortexflow.internal',
         ring: 2
     }),
     (p_priya:Person {
         id: 'p_priya',
         name: 'Priya Sharma',
         handle: '@Priya',
-        role: 'Frontend Lead',
-        team: 'Checkout Experience',
+        role: 'UI/UX & Frontend Lead',
+        team: 'Design & Frontend',
+        department: 'Product Design',
+        clearance: 'senior',
+        email: 'priya@cortexflow.internal',
         ring: 2
     }),
     (p_sarah:Person {
@@ -99,15 +105,21 @@ def seed_graph():
         name: 'Sarah Jenkins',
         handle: '@Sarah',
         role: 'Staff Architect',
-        team: 'Architecture',
+        team: 'Architecture & Platform',
+        department: 'Architecture',
+        clearance: 'senior',
+        email: 'sarah@cortexflow.internal',
         ring: 2
     }),
     (p_rohit:Person {
         id: 'p_rohit',
         name: 'Rohit Verma',
         handle: '@Rohit',
-        role: 'Security Engineer',
-        team: 'AppSec',
+        role: 'Security & QA Lead',
+        team: 'SecOps & QA',
+        department: 'Security & Quality Assurance',
+        clearance: 'senior',
+        email: 'rohit@cortexflow.internal',
         ring: 2
     })
     """
@@ -121,6 +133,9 @@ def seed_graph():
         content: 'Payment-API uses REST with a 30-second timeout window.',
         status: 'stale',
         sensitivity: 'public',
+        design_impact: 'Misleading 30s guidance causes UX teams to implement prolonged loading spinners.',
+        qa_impact: 'Causes QA E2E test suites to use obsolete 30s assertions.',
+        dev_impact: 'Causes confusion with production 5s fail-fast worker thread configuration.',
         ring: 3
     }),
     (doc_sprint:Document {
@@ -198,6 +213,10 @@ def seed_graph():
         name: 'Decision-02',
         title: '5s Fail-Fast Payment Timeout',
         status: 'active',
+        rationale: 'Fail-fast prevents worker pool starvation during gateway latency spikes',
+        design_impact: 'Checkout-UI loading spinner and retry UX must trigger at 5s, not 30s.',
+        qa_impact: 'E2E regression test suite assertions for Payment-API must assert <= 5000ms fail-fast timeout.',
+        dev_impact: 'Enforce 5s fail-fast timeout on Payment-API worker threads.',
         ring: 3
     })
     """

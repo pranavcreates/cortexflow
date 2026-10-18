@@ -2,14 +2,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   ChevronDown, 
   ChevronRight, 
-  Copy, 
-  Check, 
   Cpu, 
   CornerDownLeft,
   Sparkles,
-  ArrowRight,
   AlertTriangle,
-  User
+  User,
+  ShieldCheck,
+  XCircle,
+  CheckCircle2,
+  Zap
 } from 'lucide-react';
 
 export default function CenterChat({
@@ -17,11 +18,11 @@ export default function CenterChat({
   onSendMessage,
   onSelectNode,
   onHighlightPath,
-  isAsking
+  isAsking,
+  currentUser
 }) {
   const [input, setInput] = useState('');
-  const [expandedCypherIdx, setExpandedCypherIdx] = useState({});
-  const [copiedIdx, setCopiedIdx] = useState(null);
+  const [expandedRagIdx, setExpandedRagIdx] = useState({});
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -39,17 +40,11 @@ export default function CenterChat({
     setInput('');
   };
 
-  const toggleCypher = (idx) => {
-    setExpandedCypherIdx((prev) => ({
+  const toggleRag = (idx) => {
+    setExpandedRagIdx((prev) => ({
       ...prev,
-      [idx]: !prev[idx]
+      [idx]: prev[idx] === undefined ? false : !prev[idx] // open by default if undefined or toggle
     }));
-  };
-
-  const copyCypher = (text, idx) => {
-    navigator.clipboard.writeText(text);
-    setCopiedIdx(idx);
-    setTimeout(() => setCopiedIdx(null), 2000);
   };
 
   // Helper to format inline bold and handles (@handle)
@@ -58,14 +53,14 @@ export default function CenterChat({
     return parts.map((part, i) => {
       if (part.startsWith('**') && part.endsWith('**')) {
         return (
-          <strong key={i} className="text-white font-medium">
+          <strong key={i} className="text-white font-semibold">
             {part.slice(2, -2)}
           </strong>
         );
       }
       if (part.startsWith('@')) {
         return (
-          <span key={i} className="text-cyan-400 font-medium font-mono text-[11px] bg-cyan-950/30 px-1 py-0.5 rounded">
+          <span key={i} className="text-cyan-300 font-semibold font-mono text-xs bg-cyan-950/40 px-1.5 py-0.5 rounded border border-cyan-500/30">
             {part}
           </span>
         );
@@ -82,15 +77,15 @@ export default function CenterChat({
     return paragraphs.map((para, pIdx) => {
       const lines = para.split('\n');
       return (
-        <div key={pIdx} className="space-y-2 my-2">
+        <div key={pIdx} className="space-y-2.5 my-2.5">
           {lines.map((line, lIdx) => {
             const trimmed = line.trim();
             if (!trimmed) return null;
 
             if (trimmed.startsWith('### ')) {
               return (
-                <h4 key={lIdx} className="text-xs font-medium text-white tracking-wide uppercase mt-2.5 flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-[#3B82F6]" />
+                <h4 key={lIdx} className="text-sm font-semibold text-white tracking-wide uppercase mt-3 flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-[#3B82F6]" />
                   <span>{trimmed.replace('### ', '')}</span>
                 </h4>
               );
@@ -100,8 +95,8 @@ export default function CenterChat({
             if (trimmed.startsWith('- ')) {
               const content = trimmed.replace('- ', '');
               return (
-                <div key={lIdx} className="flex items-start gap-2 text-xs text-gray-300 leading-relaxed pl-1">
-                  <span className="text-[#3B82F6] font-medium mt-1 text-[8px]">•</span>
+                <div key={lIdx} className="flex items-start gap-2.5 text-sm text-gray-100 leading-relaxed pl-1">
+                  <span className="text-[#3B82F6] font-bold mt-1 text-[10px]">•</span>
                   <div className="flex-1">
                     {renderInlineFormatted(content)}
                   </div>
@@ -111,7 +106,7 @@ export default function CenterChat({
 
             // Regular conversational prose paragraph
             return (
-              <p key={lIdx} className="text-xs text-gray-200 leading-relaxed font-normal">
+              <p key={lIdx} className="text-sm text-gray-100 leading-relaxed font-normal">
                 {renderInlineFormatted(trimmed)}
               </p>
             );
@@ -124,77 +119,147 @@ export default function CenterChat({
   return (
     <section className="w-full lg:w-[38%] h-full bg-[#141414] rounded-2xl flex flex-col overflow-hidden select-none">
       
+      {/* 1. Active Session Context Bar */}
+      <div className="px-4 py-2.5 bg-[#042254] border-b border-white/10 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="text-base shrink-0">{currentUser?.avatar || '👨‍💻'}</span>
+          <div className="flex flex-col min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-white text-xs truncate">
+                {currentUser?.name || 'Arjun Mehta'}
+              </span>
+              <span className="text-[10px] font-mono text-cyan-300 bg-[#021538] px-1.5 py-0.5 rounded border border-cyan-500/20">
+                {currentUser?.handle || '@Arjun'}
+              </span>
+            </div>
+            <span className="text-[11px] text-blue-200/80 truncate">
+              {currentUser?.role || 'Senior Backend Eng'}
+            </span>
+          </div>
+        </div>
 
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#021538] text-blue-100 border border-blue-400/20">
+            {currentUser?.team || 'Backend Dev'}
+          </span>
+          <span className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded-full border font-semibold flex items-center gap-1 ${
+            currentUser?.clearance === 'intern'
+              ? 'bg-purple-950/60 text-purple-300 border-purple-500/30'
+              : 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30'
+          }`}>
+            <ShieldCheck className="h-3 w-3" />
+            <span>{currentUser?.clearance || 'senior'}</span>
+          </span>
+        </div>
+      </div>
 
-      {/* Prompt Scenario Chips directly above message scroll area */}
+      {/* 2. Team-Specific 1-Click Scenario Chips (2x2 Grid for 1080p Viewports) */}
       <div className="p-4 pb-0">
-        <div className="flex items-center gap-2 flex-wrap mb-3">
+        <div className="grid grid-cols-2 gap-2 mb-3">
           <button
             type="button"
-            onClick={() => onSendMessage("Why did we change Payment-API timeout to 5s, and who knows this system best?")}
+            onClick={() => onSendMessage("I'm designing the Checkout-UI loading state for 30s based on Arch_Doc_v1.md. Does this follow our active rules?")}
             disabled={isAsking}
-            className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium text-xs px-3.5 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 border-0 shadow-sm disabled:opacity-40"
+            title="Design/Frontend: UX vs Backend Rule Check"
+            className="h-9 w-full bg-[#021538] hover:bg-[#031d4d] text-blue-100 hover:text-white font-medium text-xs px-3 rounded-[8px] transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm disabled:opacity-40 truncate"
           >
-            💳 Payment-API Timeout Lineage
+            🎨 UX vs Backend Rule Check (30s Spinner)
           </button>
+          
           <button
             type="button"
-            onClick={() => onSendMessage("I'm Priya starting work on Checkout-UI today. Any bugs or blockers I should know?")}
+            onClick={() => onSendMessage("Our QA E2E regression tests on Checkout-UI are failing on 10s timeouts and OAuth login. Is this a test script issue or backend rule change?")}
             disabled={isAsking}
-            className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium text-xs px-3.5 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 border-0 shadow-sm disabled:opacity-40"
+            title="QA/SecOps: QA E2E Test Failure Triage"
+            className="h-9 w-full bg-[#021538] hover:bg-[#031d4d] text-blue-100 hover:text-white font-medium text-xs px-3 rounded-[8px] transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm disabled:opacity-40 truncate"
           >
-            🚨 Checkout-UI Blockers & SLAs
+            🧪 QA E2E Test Failure Triage
           </button>
+          
           <button
             type="button"
-            onClick={() => onSendMessage("Trace all decisions and security risks affecting Auth-Service")}
+            onClick={() => onSendMessage("Can we deploy Checkout-UI to production right now, or does it violate upstream blocker rules?")}
             disabled={isAsking}
-            className="bg-[#3B82F6] hover:bg-[#2563EB] text-white font-medium text-xs px-3.5 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1.5 border-0 shadow-sm disabled:opacity-40"
+            title="Backend Dev: Pre-Deploy Governance Audit"
+            className="h-9 w-full bg-[#021538] hover:bg-[#031d4d] text-blue-100 hover:text-white font-medium text-xs px-3 rounded-[8px] transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm disabled:opacity-40 truncate"
           >
-            🔒 Auth-Service Risks & Decisions
+            🚨 Pre-Deploy Governance Audit
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => onSendMessage("What happens across Design, QA, and Backend if @Arjun misses the Bug-402 SLA today?")}
+            disabled={isAsking}
+            title="Architecture: Bus Factor & SLA Risk Audit"
+            className="h-9 w-full bg-[#021538] hover:bg-[#031d4d] text-blue-100 hover:text-white font-medium text-xs px-3 rounded-[8px] transition-colors cursor-pointer flex items-center gap-1.5 shadow-sm disabled:opacity-40 truncate"
+          >
+            🚌 Bus Factor & SLA Risk Audit
           </button>
         </div>
       </div>
 
-      {/* 2. Messages Console Stream with generous spacing (space-y-6) */}
+      {/* 3. Messages Console Stream with generous spacing (space-y-6) */}
       <div className="flex-1 overflow-y-auto p-6 space-y-6">
         {messages.map((msg, idx) => {
           const isUser = msg.sender === 'user';
+          const isRagOpen = expandedRagIdx[idx] !== false; // default open for high impact
 
           return (
             <div
               key={idx}
               className={`rounded-xl p-6 transition-colors space-y-3 shadow-md ${
                 isUser
-                  ? 'bg-[#042254] max-w-[90%] ml-auto'
-                  : 'bg-[#042254]'
+                  ? 'bg-[#0B1528] max-w-[90%] ml-auto'
+                  : 'bg-[#0B1528]'
               }`}
             >
               {/* Header: Sender Info & Telemetry */}
-              <div className="flex items-center justify-between text-xs text-blue-200/80 pb-2 border-b border-white/10">
+              <div className="flex items-center justify-between text-xs text-blue-100 pb-2.5 border-b border-white/10 flex-wrap gap-2">
                 <div className="flex items-center gap-2">
-                  <div className="h-5 w-5 rounded-full flex items-center justify-center bg-[#021538] text-gray-200">
-                    {isUser ? <User className="h-3 w-3" /> : <Cpu className="h-3 w-3 text-[#3B82F6]" />}
+                  <div className="h-6 w-6 rounded-full flex items-center justify-center bg-[#021538] text-gray-200">
+                    {isUser ? <User className="h-3.5 w-3.5" /> : <Cpu className="h-3.5 w-3.5 text-[#3B82F6]" />}
                   </div>
-                  <span className="font-medium text-white text-xs">
-                    {isUser ? 'Engineer Prompt' : 'CortexFlow Brain'}
+                  <span className="font-semibold text-white text-sm">
+                    {isUser 
+                      ? `${msg.user_context?.name || 'Engineer'} (${msg.user_context?.handle || '@User'})` 
+                      : 'CortexFlow Brain'}
                   </span>
                   {!isUser && msg.latency_ms && (
-                    <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
+                    <span className="text-xs font-mono text-blue-100 px-2.5 py-0.5 rounded-full bg-[#021538] border border-blue-500/20 font-medium">
                       {msg.latency_ms}ms cypher
                     </span>
                   )}
                 </div>
 
-                <span className="text-[10px] font-mono text-gray-400">
-                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
+                {/* Compliance Verdict Badge on Agent Responses */}
+                {!isUser && msg.compliance_verdict && (
+                  <div className="flex items-center gap-2">
+                    {msg.compliance_verdict === 'VIOLATION' && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/50 text-rose-300 font-bold text-xs tracking-wider font-mono">
+                        <XCircle className="h-3.5 w-3.5 text-rose-400" />
+                        <span>RULE VIOLATION</span>
+                      </span>
+                    )}
+                    {msg.compliance_verdict === 'WARNING' && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-500/50 text-amber-300 font-bold text-xs tracking-wider font-mono">
+                        <AlertTriangle className="h-3.5 w-3.5 text-amber-400" />
+                        <span>BLOCKER WARNING</span>
+                      </span>
+                    )}
+                    {msg.compliance_verdict === 'COMPLIANT' && (
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 font-bold text-xs tracking-wider font-mono">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                        <span>COMPLIANT</span>
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Message Body */}
               <div>
                 {isUser ? (
-                  <p className="text-xs text-gray-200 leading-relaxed font-normal">
+                  <p className="text-sm text-white leading-relaxed font-normal">
                     {msg.text}
                   </p>
                 ) : (
@@ -220,98 +285,95 @@ export default function CenterChat({
                     }}
                     className={`mt-3 p-4 rounded-xl border transition-all cursor-pointer ${
                       isOverdue
-                        ? 'bg-rose-500/10 border-rose-500/30 hover:border-rose-500/50'
-                        : 'bg-amber-500/10 border-amber-500/20 hover:border-amber-500/40'
+                        ? 'bg-rose-500/15 border-rose-500/40 hover:border-rose-500/60'
+                        : 'bg-amber-500/15 border-amber-500/30 hover:border-amber-500/50'
                     }`}
                   >
-                    <div className="flex items-center justify-between text-[10px] font-mono mb-1.5 flex-wrap gap-2">
-                      <div className="flex items-center gap-1.5">
-                        <AlertTriangle className={`h-3.5 w-3.5 ${isOverdue ? 'text-rose-400' : 'text-amber-400'}`} />
-                        <span className={`${isOverdue ? 'text-rose-400' : 'text-amber-400'} font-semibold tracking-wide uppercase`}>
+                    <div className="flex items-center justify-between text-xs font-mono mb-2 flex-wrap gap-2">
+                      <div className="flex items-center gap-2">
+                        <AlertTriangle className={`h-4 w-4 ${isOverdue ? 'text-rose-400' : 'text-amber-400'}`} />
+                        <span className={`${isOverdue ? 'text-rose-300' : 'text-amber-300'} font-bold tracking-wide uppercase text-xs`}>
                           {isOverdue ? 'Critical SLA Overdue Blocker' : 'Downstream Blocker Risk'}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1.5">
                         {allAffectedSystemNames.map((sysName) => (
-                          <span key={sysName} className="px-1.5 py-0.5 rounded bg-black/40 border border-white/5 text-[10px] font-mono text-gray-300">
+                          <span key={sysName} className="px-2 py-0.5 rounded bg-black/60 border border-white/10 text-xs font-mono text-gray-100 font-medium">
                             {sysName}
                           </span>
                         ))}
                       </div>
                     </div>
-                    <p className="text-xs text-gray-200 leading-relaxed font-sans">
+                    <p className="text-sm text-gray-100 leading-relaxed font-sans font-normal">
                       {primaryMsg}
                     </p>
                     {allAffectedSystemNames.length > 1 && (
-                      <p className="text-[11px] text-gray-400 mt-1.5 flex items-center gap-1">
-                        <span className="text-gray-500">Ripple blast radius:</span>
-                        <span className="text-gray-300 font-mono">{allAffectedSystemNames.join(', ')}</span>
+                      <p className="text-xs text-gray-300 mt-2 flex items-center gap-1.5">
+                        <span className="text-gray-400 font-medium">Ripple blast radius:</span>
+                        <span className="text-gray-100 font-mono font-medium">{allAffectedSystemNames.join(', ')}</span>
                       </p>
                     )}
-                    <div className="mt-2 flex items-center justify-end text-[10px] text-gray-400 hover:text-white transition-colors">
+                    <div className="mt-2.5 flex items-center justify-end text-xs text-blue-200 hover:text-white transition-colors font-medium">
                       <span>Click to inspect blocker path in graph →</span>
                     </div>
                   </div>
                 );
               })()}
 
-              {/* Technical Lineage (Clickable inline pills: bg-[#181C29] border border-white/5 text-cyan-400) */}
-              {!isUser && ((msg.lineage && msg.lineage.length > 0) || (msg.sources && msg.sources.length > 0)) && (
-                <div className="pt-2 flex items-center gap-2 flex-wrap text-[10px]">
-                  <span className="text-gray-500 font-medium font-mono">Lineage:</span>
-                  {(msg.lineage && msg.lineage.length > 0
-                    ? msg.lineage
-                    : (msg.sources || []).map((s) => s.name || s.id)
-                  ).map((item, lIdx) => {
-                    const matchedSource = msg.sources?.find(
-                      (s) => s.name === item || s.id === item || (s.name && item.includes(s.name))
-                    );
-                    const targetId = matchedSource ? matchedSource.id : item;
-
-                    return (
-                      <button
-                        key={lIdx}
-                        type="button"
-                        onClick={() => onSelectNode(targetId)}
-                        className="px-2.5 py-1 rounded-md bg-[#021538] text-cyan-300 hover:text-cyan-200 font-mono text-[10px] flex items-center gap-1.5 transition-all cursor-pointer shadow-sm group"
-                        title={`Inspect ${item}`}
-                      >
-                        <span>{item}</span>
-                        <ArrowRight className="h-2.5 w-2.5 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-
-              {/* Collapsible Cypher Query Inspection */}
-              {!isUser && msg.executed_cypher && (
-                <div className="pt-2">
+              {/* Collapsible Vector RAG vs. FalkorDB GraphRAG Comparison Drawer */}
+              {!isUser && msg.vector_rag_comparison && (
+                <div className="pt-2 border-t border-white/10">
                   <button
                     type="button"
-                    onClick={() => toggleCypher(idx)}
-                    className="flex items-center gap-1.5 text-[11px] font-mono text-gray-400 hover:text-white transition-colors"
+                    onClick={() => toggleRag(idx)}
+                    className="w-full flex items-center justify-between py-1.5 px-3 rounded-lg bg-[#021538] hover:bg-[#031d4d] text-xs font-medium text-cyan-300 transition-colors border border-cyan-500/20 cursor-pointer"
                   >
-                    {expandedCypherIdx[idx] ? <ChevronDown className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
-                    <span>Inspect FalkorDB Cypher</span>
-                    <span className="text-[10px] text-gray-500">
-                      ({msg.latency_ms ? `${msg.latency_ms}ms` : '<3ms'})
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <Zap className="h-3.5 w-3.5 text-amber-400" />
+                      <span className="font-semibold text-white">
+                        ⚡ Vector RAG vs. FalkorDB GraphRAG
+                      </span>
+                      <span className="text-[11px] text-cyan-200 font-mono">
+                        (Why Vector RAG Fails)
+                      </span>
+                    </div>
+                    {isRagOpen ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
                   </button>
 
-                  {expandedCypherIdx[idx] && (
-                    <div className="mt-2 relative rounded-xl bg-[#0B0E16] border border-white/5 p-4 font-mono text-[11px] text-gray-300">
-                      <button
-                        type="button"
-                        onClick={() => copyCypher(msg.executed_cypher, idx)}
-                        className="flat-pill-btn absolute top-2 right-2 p-1.5 bg-[#181C29] hover:bg-[#202536] text-gray-400 hover:text-white transition-colors"
-                        title="Copy Cypher query"
-                      >
-                        {copiedIdx === idx ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
-                      </button>
-                      <pre className="pr-8 whitespace-pre-wrap leading-relaxed text-gray-400">
-                        {msg.executed_cypher}
-                      </pre>
+                  {isRagOpen && (
+                    <div className="mt-2.5 p-3.5 rounded-xl bg-[#0B0E16] border border-white/10 text-xs space-y-3">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {/* Vector RAG Column */}
+                        <div className="p-3 rounded-lg bg-rose-950/20 border border-rose-500/20 space-y-1.5">
+                          <div className="flex items-center gap-1.5 text-rose-300 font-bold uppercase font-mono text-[11px]">
+                            <XCircle className="h-3.5 w-3.5" />
+                            <span>Standard Vector RAG (Failure Mode)</span>
+                          </div>
+                          <p className="text-xs text-gray-300 leading-relaxed font-sans">
+                            {msg.vector_rag_comparison.vector_rag_result}
+                          </p>
+                        </div>
+
+                        {/* FalkorDB GraphRAG Column */}
+                        <div className="p-3 rounded-lg bg-blue-950/25 border border-blue-500/30 space-y-1.5">
+                          <div className="flex items-center gap-1.5 text-cyan-300 font-bold uppercase font-mono text-[11px]">
+                            <CheckCircle2 className="h-3.5 w-3.5 text-cyan-400" />
+                            <span>FalkorDB Multi-Hop GraphRAG (Ground Truth)</span>
+                          </div>
+                          <p className="text-xs text-gray-200 leading-relaxed font-sans">
+                            {msg.vector_rag_comparison.falkordb_graphrag_result}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Rot Prevented Banner */}
+                      <div className="p-2.5 rounded-lg bg-emerald-950/25 border border-emerald-500/25 flex items-start gap-2">
+                        <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                        <div className="text-xs text-emerald-200">
+                          <strong className="text-white font-semibold">Knowledge Rot Prevented: </strong>
+                          <span>{msg.vector_rag_comparison.rot_prevented}</span>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -323,18 +385,18 @@ export default function CenterChat({
 
         {/* Loading Skeleton Indicator */}
         {isAsking && (
-          <div className="rounded-xl bg-[#042254] shadow-md p-6 space-y-3">
+          <div className="rounded-xl bg-[#0B1528] shadow-md p-6 space-y-3">
             <div className="flex items-center justify-between pb-2 border-b border-white/10">
               <div className="flex items-center gap-2">
                 <div className="h-5 w-5 rounded-full bg-[#021538] flex items-center justify-center">
-                  <Sparkles className="h-3 w-3 text-[#3B82F6] animate-pulse" />
+                  <Sparkles className="h-3 w-3 text-[#3B82F6]" />
                 </div>
-                <span className="font-medium text-white text-xs">CortexFlow Brain</span>
-                <span className="text-[10px] font-mono text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
-                  loading...
+                <span className="font-semibold text-white text-xs font-sans">CortexFlow Brain</span>
+                <span className="text-[10px] font-sans font-medium text-blue-200 px-2 py-0.5 rounded-full bg-[#021538]">
+                  Reasoning
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-blue-200 animate-pulse">executing Cypher</span>
+              <span className="text-[11px] font-sans font-medium text-blue-200">executing Cypher on FalkorDB</span>
             </div>
 
             <div className="space-y-2">
@@ -342,37 +404,30 @@ export default function CenterChat({
               <div className="h-3 w-full rounded bg-white/5 skeleton-shimmer" />
               <div className="h-3 w-4/5 rounded bg-white/5 skeleton-shimmer" />
             </div>
-
-            <div className="flex items-center gap-2 text-xs text-gray-400 pt-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#3B82F6] animate-ping" />
-              <span className="font-mono text-[11px] text-gray-300">
-                loading multi-hop reasoning & blast radius from FalkorDB...
-              </span>
-            </div>
           </div>
         )}
 
         <div ref={messagesEndRef} />
       </div>
 
-      {/* 3. Bottom Command Input Field */}
-      <div className="p-4">
+      {/* 4. Bottom Command Input Field */}
+      <div className="px-6 pb-4 pt-1">
         <form onSubmit={handleSubmit} className="relative flex items-center">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask CortexFlow brain (e.g. 'Why did we change Payment-API timeout?')..."
-            className="w-full h-11 rounded-full bg-[#042254] pl-4 pr-28 text-xs text-white placeholder-blue-200/60 focus:outline-none transition-colors shadow-sm"
+            placeholder={`Ask CortexFlow brain as ${currentUser?.handle || '@Arjun'}...`}
+            className="w-full h-[52px] rounded-[10px] bg-[#042254] pl-4 pr-28 text-sm text-white placeholder-blue-200/70 focus:outline-none transition-colors shadow-sm border border-white/10 focus:border-[#3B82F6] font-sans"
           />
-          <div className="absolute right-1.5 flex items-center gap-1">
+          <div className="absolute right-2 flex items-center gap-1">
             <button
               type="submit"
               disabled={!input.trim() || isAsking}
-              className="h-8 px-3.5 rounded-full bg-[#3B82F6] hover:bg-[#2B6CB7] text-white text-xs font-medium flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-40 disabled:pointer-events-none"
+              className="h-[38px] px-4 rounded-[8px] bg-[#3B82F6] hover:bg-[#2B6CB7] text-white text-xs md:text-sm font-semibold flex items-center gap-1.5 transition-colors shadow-sm disabled:opacity-40 disabled:pointer-events-none cursor-pointer font-sans"
             >
-              <span>{isAsking ? 'loading...' : 'Ask'}</span>
-              <CornerDownLeft className="h-3 w-3" />
+              <span className="font-sans">{isAsking ? 'Thinking...' : 'Ask'}</span>
+              <CornerDownLeft className="h-4 w-4" />
             </button>
           </div>
         </form>
